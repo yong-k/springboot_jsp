@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+}
+.main {
+  display: flex;
+  justify-content: center;
+}
+
+/*index*/
+div#index-box {
+  margin-top: 3%;
+}
+
+/*user*/
+label {
+  cursor: pointer;
+}
+.userform-box div.mb-3 {
+  justify-content: center;
+  align-items: center;
+}
+div.main-header {
+  padding-top: 4%;
+}
+.main-header-info {
+  margin-top: 1%;
+  margin-bottom: 3.5%;
+  font-size: 25px;
+}
+#userlist-btn-box {
+  text-align: right;
+  margin-bottom: 1%;
+}
+.input-box {
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+}
+.userform-btn-box {
+  margin-top: 4%;
+  margin-bottom: 5%;
+}
+.userform-btn-box form {
+  display: inline;
+}
+button.userform-btn {
+  width: 8%;
+  margin-left: 1%;
+}
+
+th:hover {
+  cursor: default;
+}
+tr:hover {
+  cursor: pointer;
+}
