@@ -18,7 +18,7 @@
                 <h3 class="main-header-info">회원 등록</h3>
             </div>
 
-            <form action="/users" method="post">
+            <form name="saveForm" action="/users" method="post">
                 <div class="mb-3 row">
                     <label for="name" class="col-sm-2 col-form-label">이름</label>
                     <div class="col-sm-3">
@@ -26,21 +26,30 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="username" class="col-sm-2 col-form-label">닉네임</label>
+                    <label for="username" class="col-sm-2 col-form-label">닉네임<span class="form-required">*</span></label>
                     <div class="col-sm-3">
                         <input type="username" class="form-control" id="username" name="username">
+                        <div class="errMsg" id="usernameErrMsg">이미 사용중인 닉네임 입니다.</div>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="password" class="col-sm-2 col-form-label">비밀번호</label>
+                    <label for="password" class="col-sm-2 col-form-label">비밀번호<span class="form-required">*</span></label>
                     <div class="col-sm-3">
                         <input type="password" class="form-control" id="password" name="password">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="username" class="col-sm-2 col-form-label">이메일</label>
+                    <label for="password-check" class="col-sm-2 col-form-label">비밀번호 확인<span class="form-required">*</span></label>
                     <div class="col-sm-3">
-                        <input type="email" class="form-control" id="email" name="email">
+                        <input type="password" class="form-control" id="password-check">
+                        <div class="errMsg" id="passwordErrMsg">비밀번호가 일치하지 않습니다.</div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="username" class="col-sm-2 col-form-label">이메일<span class="form-required">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="ex) abc123@naver.com">
+                        <div class="errMsg" id="emailErrMsg">이미 사용중인 이메일 입니다.</div>
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -52,7 +61,7 @@
                 <div class="mb-3 row">
                     <label for="phone" class="col-sm-2 col-form-label">휴대폰</label>
                     <div class="col-sm-3">
-                        <input type="phone" class="form-control" id="phone" name="phone">
+                        <input type="phone" class="form-control" id="phone" name="phone" oninput="oninputPhone(this)" maxlength="13" placeholder="ex) 010-0000-0000">
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -64,12 +73,13 @@
                 <div class="mb-3 row">
                     <label for="website" class="col-sm-2 col-form-label">사이트</label>
                     <div class="col-sm-3">
-                        <input type="website" class="form-control" id="website" name="website">
+                        <input type="text" class="form-control" id="website" name="website" placeholder="ex) www.naver.com">
                     </div>
                 </div>
 
                 <div class="userform-btn-box">
-                    <button class="btn btn-primary userform-btn">등록</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary userform-btn">등록</button>
+                    <div class="errMsg" id="requiredErrMsg">닉네임, 비밀번호, 이메일은 필수 입력 항목입니다.</div>
                 </div>
             </form>
 
@@ -78,6 +88,8 @@
 
     <c:import url="/footer"></c:import>
 
+    <script src="/js/userForm.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

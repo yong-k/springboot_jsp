@@ -8,16 +8,16 @@
         ORDER BY id DESC
     </select>
 
-    <insert id="saveUser">
-        INSERT INTO User (name, username, email, password, address, phone, website, company)
-        VALUES (#{name}, #{username}, #{email}, #{password}, #{address}, #{phone}, #{website}, #{company})
-    </insert>
-
     <select id="findById" resultType="com.study.web1.vo.UserVo">
         SELECT id, name, username, email, address, phone, website, company
         FROM User
         WHERE id = #{id}
     </select>
+
+    <insert id="saveUser">
+        INSERT INTO User (name, username, email, password, address, phone, website, company)
+        VALUES (#{name}, #{username}, #{email}, #{password}, #{address}, #{phone}, #{website}, #{company})
+    </insert>
 
     <update id="updateUser">
         UPDATE User
@@ -29,5 +29,23 @@
         DELETE FROM User
         WHERE id = #{id}
     </delete>
+    
+    <select id="countUsername" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM User
+        WHERE username = #{username}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+
+    <select id="countEmail" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM User
+        WHERE email = #{email}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
 
 </mapper>

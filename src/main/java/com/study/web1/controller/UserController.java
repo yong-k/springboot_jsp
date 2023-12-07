@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @Controller
 public class UserController {
 
@@ -24,6 +26,14 @@ public class UserController {
         return "userList";
     }
 
+    @GetMapping("/users/{id}")
+    public String findById(Model model, @PathVariable("id") Long id) {
+        UserVo user = userService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found: id=" + id));
+        model.addAttribute("user", user);
+        return "userDetail";
+    }
+
     @GetMapping ("/users/save")
     public String saveForm() {
         return "userInsertForm";
@@ -35,16 +45,11 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users/{id}")
-    public String findById(Model model, @PathVariable("id") Long id) {
-        // users id 직접 치고 들어왔을 때 없을 경우 예외처리
-        model.addAttribute("user", userService.findById(id));
-        return "userDetail";
-    }
-
     @GetMapping("/users/update/{id}")
     public String updateForm(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.findById(id));
+        UserVo user = userService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found: id=" + id));
+        model.addAttribute("user", user);
         return "userUpdateForm";
     }
 
@@ -68,5 +73,15 @@ public class UserController {
     @GetMapping("/footer")
     public String footer() {
         return "footer";
+    }
+
+    @PostMapping("/checkusername")
+    public @ResponseBody Integer checkUsername(@RequestParam(name = "id", required = false) String id, @RequestParam("username") String username) {
+        return userService.countUsername(id, username);
+    }
+
+    @PostMapping("/checkemail")
+    public @ResponseBody Integer checkEmail(@RequestParam(name = "id", required = false) String id, @RequestParam("email") String email) {
+        return userService.countEmail(id, email);
     }
 }

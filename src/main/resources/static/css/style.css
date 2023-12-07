@@ -46,7 +46,22 @@ button.userform-btn {
   width: 8%;
   margin-left: 1%;
 }
-
+span.form-required {
+  color: red;
+  font-size: 18px;
+  margin-left: 5%;
+}
+div.errMsg {
+  text-align: left;
+  padding-top: 2%;
+  color: red;
+  font-size: 12px;
+  display: none;
+}
+div#requiredErrMsg {
+  text-align: center;
+  margin-top: -1%;
+}
 th:hover {
   cursor: default;
 }
