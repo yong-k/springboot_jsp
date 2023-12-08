@@ -61,7 +61,7 @@
                  <div class="mb-3 row">
                      <label for="phone" class="col-sm-2 col-form-label">휴대폰</label>
                      <div class="col-sm-3">
-                         <input type="phone" class="form-control" id="phone" name="phone" oninput="oninputPhone(this)" maxlength="13" placeholder="ex) 010-0000-0000">
+                         <input type="phone" class="form-control" id="phone" name="phone" value="${user.phone}" oninput="oninputPhone(this)" maxlength="13" placeholder="ex) 010-0000-0000">
                      </div>
                  </div>
                  <div class="mb-3 row">

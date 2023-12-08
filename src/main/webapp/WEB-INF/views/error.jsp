@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>web</title>
 </head>
-<body>    <script src="/js/error.js"></script>
+<body>
+    <script src="/js/error.js"></script>
 </body>
 </html>

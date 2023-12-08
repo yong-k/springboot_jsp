@@ -1,5 +1,6 @@
 package com.study.web1.controller;
 
+import com.study.web1.exception.BaseException;
 import com.study.web1.service.UserService;
 import com.study.web1.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
+import static com.study.web1.response.BaseResponseStatus.*;
+import static com.study.web1.utils.ValidationRegex.isRegexEmail;
 
 @Controller
 public class UserController {
@@ -28,9 +30,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String findById(Model model, @PathVariable("id") Long id) {
-        UserVo user = userService.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found: id=" + id));
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findById(id));
         return "userDetail";
     }
 
@@ -41,15 +41,21 @@ public class UserController {
 
     @PostMapping("/users")
     public String saveUser(UserVo user) {
+        // 필수정보 입력
+        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null)
+            throw new BaseException(USERS_EMPTY_REQUIRED);
+
+        // 이메일 정규표현
+        if (!isRegexEmail(user.getEmail()))
+            throw new BaseException(POST_USERS_INVALID_EMAIL);
+
         userService.saveUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users/update/{id}")
     public String updateForm(Model model, @PathVariable("id") Long id) {
-        UserVo user = userService.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found: id=" + id));
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findById(id));
         return "userUpdateForm";
     }
 
@@ -65,6 +71,16 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PostMapping("/checkusername")
+    public @ResponseBody Integer checkUsername(@RequestParam(name = "id", required = false) Long id, @RequestParam("username") String username) {
+        return userService.countUsername(id, username);
+    }
+
+    @PostMapping("/checkemail")
+    public @ResponseBody Integer checkEmail(@RequestParam(name = "id", required = false) Long id, @RequestParam("email") String email) {
+        return userService.countEmail(id, email);
+    }
+
     @GetMapping("/header")
     public String header() {
         return "header";
@@ -73,15 +89,5 @@ public class UserController {
     @GetMapping("/footer")
     public String footer() {
         return "footer";
-    }
-
-    @PostMapping("/checkusername")
-    public @ResponseBody Integer checkUsername(@RequestParam(name = "id", required = false) String id, @RequestParam("username") String username) {
-        return userService.countUsername(id, username);
-    }
-
-    @PostMapping("/checkemail")
-    public @ResponseBody Integer checkEmail(@RequestParam(name = "id", required = false) String id, @RequestParam("email") String email) {
-        return userService.countEmail(id, email);
     }
 }

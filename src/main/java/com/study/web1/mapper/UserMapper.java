@@ -13,11 +13,13 @@ public interface UserMapper {
 
     Optional<UserVo> findById(Long id);
 
-    void saveUser(UserVo user);
+    Integer saveUser(UserVo user);
 
-    void updateUser(UserVo user);
+    Integer updateUser(UserVo user);
 
-    void deleteUser(Long id);
-    Integer countUsername(@Param("id") String id, @Param("username") String username);
-    Integer countEmail(@Param("id") String id, @Param("email") String email);
+    Integer deleteUser(Long id);
+
+    Integer countUsername(@Param("id") Long id, @Param("username") String username);
+
+    Integer countEmail(@Param("id") Long id, @Param("email") String email);
 }
