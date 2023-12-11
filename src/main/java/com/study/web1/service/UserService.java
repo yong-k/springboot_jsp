@@ -1,6 +1,7 @@
 package com.study.web1.service;
 
 import com.study.web1.exception.BaseException;
+import com.study.web1.exception.InvaildEmailFormatException;
 import com.study.web1.vo.UserVo;
 import com.study.web1.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.study.web1.response.BaseResponseStatus.*;
+import static com.study.web1.utils.ValidationRegex.isRegexEmail;
 
 @Service
 public class UserService {
@@ -26,6 +28,16 @@ public class UserService {
     }
 
     public void saveUser(UserVo user) {
+        // 필수정보 입력
+        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null)
+            throw new BaseException(USERS_EMPTY_REQUIRED);
+
+        // 이메일 정규표현
+        if (!isRegexEmail(user.getEmail())) {
+            //throw new BaseException(POST_USERS_INVALID_EMAIL);
+            throw new InvaildEmailFormatException("Invalid email format error.");
+        }
+
         checkDuplicateNickname(user);
         checkDuplicateEmail(user);
 

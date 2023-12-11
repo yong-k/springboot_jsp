@@ -1,6 +1,7 @@
 package com.study.web1.controller;
 
 import com.study.web1.exception.BaseException;
+import com.study.web1.exception.InvaildEmailFormatException;
 import com.study.web1.service.UserService;
 import com.study.web1.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,16 +42,14 @@ public class UserController {
 
     @PostMapping("/users")
     public String saveUser(UserVo user) {
-        // 필수정보 입력
-        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null)
-            throw new BaseException(USERS_EMPTY_REQUIRED);
-
-        // 이메일 정규표현
-        if (!isRegexEmail(user.getEmail()))
-            throw new BaseException(POST_USERS_INVALID_EMAIL);
-
-        userService.saveUser(user);
-        return "redirect:/users";
+        try {
+            userService.saveUser(user);
+            return "redirect:/users";
+        } catch (InvaildEmailFormatException e) {
+            return "redirect:/invalidEmailPage";
+        } catch (Exception e) {
+            return "error";
+        }
     }
 
     @GetMapping("/users/update/{id}")

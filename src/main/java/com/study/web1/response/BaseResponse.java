@@ -1,7 +1,6 @@
 package com.study.web1.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import static com.study.web1.response.BaseResponseStatus.SUCCESS;
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
 public class BaseResponse<T> {
 
-    @JsonProperty("isSuccess")
     private final Boolean isSuccess;
     private final String message;
     private final int code;
