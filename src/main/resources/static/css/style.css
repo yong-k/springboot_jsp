@@ -53,14 +53,11 @@ span.form-required {
 }
 div.errMsg {
   text-align: left;
-  padding-top: 2%;
-  color: red;
   font-size: 12px;
-  display: none;
 }
 div#requiredErrMsg {
   text-align: center;
-  margin-top: -1%;
+  margin-top: 0.5%;
 }
 th:hover {
   cursor: default;
@@ -68,3 +65,4 @@ th:hover {
 tr:hover {
   cursor: pointer;
 }
+

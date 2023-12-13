@@ -1,7 +1,7 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>web1</title>
@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <c:import url="/header"></c:import>
+    <jsp:include page="header.jsp"></jsp:include>
 
     <div class="main">
         <div class="container text-center userform-box">
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <c:import url="/footer"></c:import>
+    <jsp:include page="footer.jsp"></jsp:include>
 
     <script src="/js/userDetail.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

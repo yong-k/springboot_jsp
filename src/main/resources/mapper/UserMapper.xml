@@ -14,7 +14,13 @@
         WHERE id = #{id}
     </select>
 
-    <insert id="saveUser">
+    <select id="findByUsername" resultType="com.study.web1.vo.UserVo">
+        SELECT id, name, username, email, address, phone, website, company
+        FROM User
+        WHERE username = #{username}
+    </select>
+
+    <insert id="registerUser">
         INSERT INTO User (name, username, email, password, address, phone, website, company)
         VALUES (#{name}, #{username}, #{email}, #{password}, #{address}, #{phone}, #{website}, #{company})
     </insert>
@@ -29,8 +35,8 @@
         DELETE FROM User
         WHERE id = #{id}
     </delete>
-    
-    <select id="countUsername" resultType="java.lang.Integer">
+
+    <select id="countDuplicateUsername" resultType="java.lang.Integer">
         SELECT count(*)
         FROM User
         WHERE username = #{username}
@@ -39,7 +45,7 @@
         </if>
     </select>
 
-    <select id="countEmail" resultType="java.lang.Integer">
+    <select id="countDuplicateEmail" resultType="java.lang.Integer">
         SELECT count(*)
         FROM User
         WHERE email = #{email}

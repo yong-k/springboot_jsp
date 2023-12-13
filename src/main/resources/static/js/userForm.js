@@ -1,77 +1,83 @@
-let formBtn = document.getElementById("saveBtn");
-let passCheck = false;
+let usernameFlag = false;
+let pwFlag = false;
+let emailFlag = false;
 
-formBtn.onclick = () => {
-    let id = $("#id").val();
+/**
+ * 수정폼에서 호출되면 usernameFlag, emailFlag는 true로 세팅
+ * 수정폼: /users/update/{id}
+ * 등록폼: /users/register
+ */
+let hostUrl = document.location.href.split("/");
+let lastOfHostUrl = hostUrl.at(-1);
+if (!isNaN(lastOfHostUrl)) {
+    usernameFlag = true;
+    emailFlag = true;
+}
 
-    $("#usernameErrMsg").css("display", "none");
-    $("#passwordErrMsg").css("display", "none");
-    $("#emailErrMsg").css("display", "none");
-    $("#requiredErrMsg").css("display", "none");
+$(document).ready(function(){
+    submitClose();
 
-    // 필수항목 비어있는지 체크
-    if ($("#username").val() == "" || $("#password").val() == "" || $("#password-check").val() == "" || $("#email").val() == "") {
-        $("#requiredErrMsg").css("display", "block");
-        return false;
-    }
+    defaultInputCheck();
 
-    // username, email : not null, unique
-    // username 중복체크
-    let username = $("#username").val().replaceAll(" ", "");
-    $("#username").val(username);
-    $.ajax({
-        method: "POST",
-        url: "/checkusername",
-        data: {"id" : id, "username" : username},
-        async: false
-    })
-    .done(function (response) {
-        if (response > 0) {
-            $("#usernameErrMsg").css("display", "block");
-            $("#username").focus();
-            passCheck = false;
-        } else {
-            passCheck = true;
+    $("#saveBtn").click(function() {
+        submitClose();
+        if (usernameFlag && pwFlag && emailFlag) {
+            $('form[name="saveForm"]').submit();
         }
-    })
-    .fail(function (e) {
-        console.log(e.status);
-        console.log(e.responseText);
+    });
+});
+
+function defaultInputCheck() {
+    $("#username").blur(function() {
+        usernameFlag = false;
+        checkUsername();
+        submitCheck();
     });
 
-    if (!passCheck) {
-        return false;
-    }
+    $("#password").blur(function() {
+        pwFlag = false;
+        checkPassword();
+        submitCheck();
+    });
 
-    // 비밀번호 == 비밀번호 확인
-    if ($("#password").val() != $("#password-check").val()) {
-        $("#passwordErrMsg").css("display", "block");
-        $("#password-check").focus();
-        return false;
-    }
+    $("#password-check").blur(function() {
+        pwFlag = false;
+        checkPasswordCheck();
+        submitCheck();
+    });
 
-    // 이메일: 형식 맞는지 → 중복체크
-    let email = $("#email").val();
-    if (!isEmailFormat(email)) {
-        $("#emailErrMsg").html("이메일 형식이 올바르지 않습니다.");
-        $("#emailErrMsg").css("display", "block");
-        $("#email").focus();
-        passCheck = false;
+    $("#email").blur(function() {
+        emailFlag = false;
+        checkEmail();
+        submitCheck();
+    });
+}
+
+function checkUsername() {
+    let id = $("#id").val();
+    let username = $("#username").val().replace(/\s/g, "");
+
+    $("#username").val(username);
+
+    $("#username").removeClass("is-invalid");
+    hideErrorMsg($("#usernameErrMsg"));
+
+    if ($("#username").val() == "") {
+        $("#username").addClass("is-invalid");
+        showErrorMsg($("#usernameErrMsg"), "필수 정보입니다.");
     } else {
         $.ajax({
-            method: "POST",
-            url: "/checkemail",
-            data: {"id" : id, "email" : email},
-            async: false
+            method: "GET",
+            url: "/checkusername",
+            data: {"id" : id, "username" : username}
         })
         .done(function (response) {
             if (response > 0) {
-                $("#emailErrMsg").html("이미 사용중인 이메일입니다.");
-                $("#emailErrMsg").css("display", "block");
-                $("#email").focus();
-                passCheck = false;
+                $("#username").addClass("is-invalid");
+                showErrorMsg($("#usernameErrMsg"), "사용할 수 없는 닉네임입니다.");
             } else {
-                passCheck = true;
+                usernameFlag = true;
+                submitCheck();
             }
         })
         .fail(function (e) {
@@ -79,12 +85,82 @@ formBtn.onclick = () => {
             console.log(e.responseText);
         });
     }
+}
 
-    if (passCheck) {
-        document.forms["saveForm"].submit();
+function checkPassword() {
+    $("#password").removeClass("is-invalid");
+    hideErrorMsg($("#passwordErrMsg"));
+
+    if ($("#password").val() == "") {
+        $("#password").addClass("is-invalid");
+        showErrorMsg($("#passwordErrMsg"), "필수 정보입니다.");
+    } else if ($("#password").val() == $("#password-check").val()) {
+        $("#password-check").removeClass("is-invalid");
+        hideErrorMsg($("#password-checkErrMsg"));
+        pwFlag = true;
+    } else if ($("#password-check").val() != ""
+                && $("#password").val() != $("#password-check").val()) {
+        $("#password").addClass("is-invalid");
+        $("#password-check").addClass("is-invalid");
+        showErrorMsg($("#password-checkErrMsg"), "비밀번호가 일치하지 않습니다.");
     }
-    return false;
-};
+}
+
+function checkPasswordCheck() {
+    $("#password-check").removeClass("is-invalid");
+    hideErrorMsg($("#password-checkErrMsg"));
+
+    if ($("#password-check").val() == "") {
+        $("#password-check").addClass("is-invalid");
+        showErrorMsg($("#password-checkErrMsg"), "필수 정보입니다.");
+    } else if ($("#password").val() == $("#password-check").val()) {
+        $("#password").removeClass("is-invalid");
+        $("#password-check").removeClass("is-invalid");
+        hideErrorMsg($("#password-checkErrMsg"));
+        pwFlag = true;
+    } else if ($("#password").val() != $("#password-check").val()) {
+        $("#password").addClass("is-invalid");
+        $("#password-check").addClass("is-invalid");
+        showErrorMsg($("#password-checkErrMsg"), "비밀번호가 일치하지 않습니다.");
+    }
+}
+
+function checkEmail() {
+    let id = $("#id").val();
+    let email = $("#email").val().replace(/\s/g, "");
+
+    $("#email").val(email);
+
+    $("#email").removeClass("is-invalid");
+    hideErrorMsg($("#emailErrMsg"));
+
+    if ($("#email").val() == "") {
+        $("#email").addClass("is-invalid");
+        showErrorMsg($("#emailErrMsg"), "필수 정보입니다.");
+    } else if (!isEmailFormat(email)) {
+        $("#email").addClass("is-invalid");
+        showErrorMsg($("#emailErrMsg"), "이메일 형식이 올바르지 않습니다.");
+    } else {
+        $.ajax({
+            method: "GET",
+            url: "/checkemail",
+            data: {"id" : id, "email" : email}
+        })
+        .done(function (response) {
+            if (response > 0) {
+                $("#email").addClass("is-invalid");
+                showErrorMsg($("#emailErrMsg"), "사용할 수 없는 이메일입니다.");
+            } else {
+                emailFlag = true;
+                submitCheck();
+            }
+        })
+        .fail(function (e) {
+            console.log(e.status);
+            console.log(e.responseText);
+        });
+    }
+}
 
 function oninputPhone(phone) {
     phone.value = phone.value
@@ -97,4 +173,29 @@ function isEmailFormat(email) {
     if (format.test(email))
         return true;
     return false;
+}
+
+function submitCheck() {
+    if (!usernameFlag || !pwFlag || !emailFlag) {
+        submitClose();
+    } else if (usernameFlag && pwFlag && emailFlag) {
+        submitOpen();
+    }
+}
+
+function submitClose() {
+    $("#saveBtn").attr("disabled", true);
+}
+
+function submitOpen() {
+    $("#saveBtn").attr("disabled", false);
+}
+
+function showErrorMsg(obj, msg) {
+    obj.html(msg);
+    obj.show();
+}
+
+function hideErrorMsg(obj) {
+    obj.hide();
 }
