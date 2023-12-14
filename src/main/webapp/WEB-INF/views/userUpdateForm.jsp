@@ -7,7 +7,6 @@
     <title>web1</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="/css/style.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-latest.min.js"><
 </head>
 <body>
 
@@ -19,7 +18,7 @@
                 <h3 class="main-header-info">회원 정보 수정</h3>
             </div>
 
-            <form name="saveForm" action="/users/${user.id}" method="post">
+            <form name="saveForm" action="/users/update" method="post">
                 <div class="mb-3 row">
                      <label for="name" class="col-sm-2 col-form-label">이름</label>
                      <div class="col-sm-3">
@@ -80,11 +79,10 @@
                  </div>
 
                 <div class="userform-btn-box">
-                    <input type="hidden" name="_method" value="put">
                     <button id="saveBtn" type="button" class="btn btn-primary userform-btn">수정</button>
                     <div class="errMsg invalid-feedback" id="requiredErrMsg">닉네임, 비밀번호, 이메일은 필수 입력 항목입니다.</div>
                 </div>
-                <input type="hidden" id="id" value="${user.id}">
+                <input type="hidden" id="id" name="id" value="${user.id}">
             </form>
 
         </div>
@@ -92,7 +90,8 @@
 
     <jsp:include page="footer.jsp"></jsp:include>
 
-    <script src="/js/userForm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/js/userForm.js"></script>
 </body>
 </html>

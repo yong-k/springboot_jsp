@@ -1,9 +1,6 @@
 package com.study.web1.controller;
 
-import com.study.web1.exception.DuplicateEmailException;
-import com.study.web1.exception.DuplicateUsernameException;
-import com.study.web1.exception.InvaildEmailFormatException;
-import com.study.web1.exception.MissingRequiredInfomationException;
+import com.study.web1.exception.*;
 import com.study.web1.service.UserService;
 import com.study.web1.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +52,7 @@ public class UserController {
         try {
             userService.registerUser(user);
             newUser = userService.findByUsername(user.getUsername());
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | UnexpectedSqlResultException e) {
             model.addAttribute("message", "오류가 발생했습니다.");
             log.info("exception message={}", e.getMessage(), e);
             return "error/error";
@@ -91,11 +88,11 @@ public class UserController {
         return "userUpdateForm";
     }
 
-    @PutMapping("/users/{id}")
+    @PostMapping("/users/update")
     public String updateUser(Model model, UserVo user) {
         try {
             userService.updateUser(user);
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | UnexpectedSqlResultException e) {
             model.addAttribute("message", "오류가 발생했습니다.");
             log.info("exception message={}", e.getMessage(), e);
             return "error/error";
@@ -119,9 +116,15 @@ public class UserController {
         return "redirect:/users/" + user.getId();
     }
 
-    @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(Model model, @PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+        } catch (UnexpectedSqlResultException e) {
+            model.addAttribute("message", "오류가 발생했습니다.");
+            log.info("exception message={}", e.getMessage(), e);
+            return "error/error";
+        }
         return "redirect:/users";
     }
 

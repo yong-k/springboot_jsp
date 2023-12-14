@@ -64,10 +64,7 @@
 
             <div class="userform-btn-box">
                 <button type="button" class="btn btn-primary userform-btn" onclick="location.href='/users/update/${user.id}'">수정</button>
-                <form name="deleteForm" action="/users/${user.id}" method="post">
-                    <input type="hidden" name="_method" value="delete">
-                    <button type="button" id="deleteBtn" class="btn btn-primary userform-btn">삭제</button>
-                </form>
+                <button type="button" id="deleteBtn" class="btn btn-primary userform-btn" value="${user.id}">삭제</button>
             </div>
 
         </div>

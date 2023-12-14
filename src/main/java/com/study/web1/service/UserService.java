@@ -1,13 +1,9 @@
 package com.study.web1.service;
 
-import com.study.web1.exception.DuplicateEmailException;
-import com.study.web1.exception.DuplicateUsernameException;
-import com.study.web1.exception.InvaildEmailFormatException;
-import com.study.web1.exception.MissingRequiredInfomationException;
+import com.study.web1.exception.*;
 import com.study.web1.vo.UserVo;
 import com.study.web1.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,12 +42,8 @@ public class UserService {
         checkDuplicateEmail(user);
 
         int result = userMapper.registerUser(user);
-
-        // insert fail exception??
-        /*
         if (result != 1)
-            throw new ~~~;
-        */
+            throw new UnexpectedSqlResultException("error: insert row = " + result);
     }
 
     public void updateUser(UserVo user) {
@@ -59,22 +51,14 @@ public class UserService {
         checkDuplicateEmail(user);
 
         int result = userMapper.updateUser(user);
-
-        // update fail exception??
-        /*
         if (result != 1)
-            throw new ~~;
-        */
+            throw new UnexpectedSqlResultException("error: update row = " + result);
     }
 
     public void deleteUser(Long id) {
         int result = userMapper.deleteUser(id);
-
-        // delete fail exception?
-        /*
         if (result != 1)
-            throw new ~~;
-        */
+            throw new UnexpectedSqlResultException("error: delete row = " + result);
     }
 
     public Integer countDuplicateUsername(Long id, String username) {

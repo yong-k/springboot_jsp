@@ -8,8 +8,8 @@ let emailFlag = false;
  * 등록폼: /users/register
  */
 let hostUrl = document.location.href.split("/");
-let lastOfHostUrl = hostUrl.at(-1);
-if (!isNaN(lastOfHostUrl)) {
+let endOfHostUrl = hostUrl.at(-1);
+if (!isNaN(endOfHostUrl)) {
     usernameFlag = true;
     emailFlag = true;
 }
