@@ -2,21 +2,20 @@ let usernameFlag = false;
 let pwFlag = false;
 let emailFlag = false;
 
-/**
- * 수정폼에서 호출되면 usernameFlag, emailFlag는 true로 세팅
- * 수정폼: /users/update/{id}
- * 등록폼: /users/register
- */
-let hostUrl = document.location.href.split("/");
-let endOfHostUrl = hostUrl.at(-1);
-if (!isNaN(endOfHostUrl)) {
-    usernameFlag = true;
-    emailFlag = true;
-}
-
 $(document).ready(function(){
-    submitClose();
+    /**
+     * 수정폼에서 호출되면 usernameFlag, emailFlag는 true로 세팅
+     * 수정폼: /users/update/{id}
+     * 등록폼: /users/register
+     */
+    let hostUrl = document.location.href.split("/");
+    let endOfHostUrl = hostUrl.at(-1);
+    if (!isNaN(endOfHostUrl)) {
+        usernameFlag = true;
+        emailFlag = true;
+    }
 
+    submitClose();
     defaultInputCheck();
 
     $("#saveBtn").click(function() {

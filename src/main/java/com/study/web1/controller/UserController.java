@@ -1,15 +1,16 @@
 package com.study.web1.controller;
 
-import com.study.web1.exception.*;
+import com.study.web1.exception.UserNotFoundException;
 import com.study.web1.service.UserService;
 import com.study.web1.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
+import static com.study.web1.exception.Errcode.*;
 
 @Slf4j
 @Controller
@@ -33,12 +34,15 @@ public class UserController {
     public String findById(Model model, @PathVariable Long id) {
         try {
             model.addAttribute("user", userService.findById(id));
-        } catch (NoSuchElementException e) {
-            model.addAttribute("message", "게시물이 삭제되었거나 다른 페이지로 변경되었습니다.");
-            log.info("exception message={}", e.getMessage(), e);
+            return "userDetail";
+        } catch (UserNotFoundException e) {
+            model.addAttribute("errcode", NOT_EXIST_USER);
+            log.error("Error in UserController.findById()", e);
+            return "error/error";
+        } catch (Exception e) {
+            log.error("Error in UserController.findById()", e);
             return "error/error";
         }
-        return "userDetail";
     }
 
     @GetMapping ("/users/register")
@@ -48,84 +52,58 @@ public class UserController {
 
     @PostMapping("/users")
     public String registerUser(Model model, UserVo user) {
-        UserVo newUser;
         try {
             userService.registerUser(user);
-            newUser = userService.findByUsername(user.getUsername());
-        } catch (NoSuchElementException | UnexpectedSqlResultException e) {
-            model.addAttribute("message", "오류가 발생했습니다.");
-            log.info("exception message={}", e.getMessage(), e);
+            return "redirect:/users";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errcode", SYSTEM_PROBLEM);
+            log.error("Error in UserController.registerUser()", e);
             return "error/error";
-        } catch (MissingRequiredInfomationException e) {
-            model.addAttribute("message", "필수 정보를 입력해주세요.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (InvaildEmailFormatException e) {
-            model.addAttribute("message", "이메일 형식을 확인해주세요.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (DuplicateUsernameException e) {
-            model.addAttribute("message", "사용할 수 없는 닉네임입니다.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (DuplicateEmailException e) {
-            model.addAttribute("message", "사용할 수 없는 이메일입니다.");
-            log.info("exception message={}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Error in UserController.registerUser()", e);
             return "error/error";
         }
-        return "redirect:/users/" + newUser.getId();
     }
 
     @GetMapping("/users/update/{id}")
     public String updateForm(Model model, @PathVariable Long id) {
         try {
             model.addAttribute("user", userService.findById(id));
-        } catch (NoSuchElementException e) {
-            model.addAttribute("message", "게시물이 삭제되었거나 다른 페이지로 변경되었습니다.");
-            log.info("exception message={}", e.getMessage(), e);
+            return "userUpdateForm";
+        } catch (UserNotFoundException e) {
+            model.addAttribute("errcode", NOT_EXIST_USER);
+            log.error("Error in UserController.updateForm()", e);
+            return "error/error";
+        } catch (Exception e) {
+            log.error("Error in UserController.updateForm()", e);
             return "error/error";
         }
-        return "userUpdateForm";
     }
 
     @PostMapping("/users/update")
     public String updateUser(Model model, UserVo user) {
         try {
             userService.updateUser(user);
-        } catch (NoSuchElementException | UnexpectedSqlResultException e) {
-            model.addAttribute("message", "오류가 발생했습니다.");
-            log.info("exception message={}", e.getMessage(), e);
+            return "redirect:/users/" + user.getId();
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errcode", SYSTEM_PROBLEM);
+            log.error("Error in UserController.updateUser()", e);
             return "error/error";
-        } catch (MissingRequiredInfomationException e) {
-            model.addAttribute("message", "필수 정보를 입력해주세요.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (InvaildEmailFormatException e) {
-            model.addAttribute("message", "이메일 형식을 확인해주세요.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (DuplicateUsernameException e) {
-            model.addAttribute("message", "사용할 수 없는 닉네임입니다.");
-            log.info("exception message={}", e.getMessage(), e);
-            return "error/error";
-        } catch (DuplicateEmailException e) {
-            model.addAttribute("message", "사용할 수 없는 이메일입니다.");
-            log.info("exception message={}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Error in UserController.updateUser()", e);
             return "error/error";
         }
-        return "redirect:/users/" + user.getId();
     }
 
     @GetMapping("/users/delete/{id}")
     public String deleteUser(Model model, @PathVariable Long id) {
         try {
             userService.deleteUser(id);
-        } catch (UnexpectedSqlResultException e) {
-            model.addAttribute("message", "오류가 발생했습니다.");
-            log.info("exception message={}", e.getMessage(), e);
+            return "redirect:/users";
+        } catch (Exception e) {
+            log.error("Error in UserController.deleteUser()", e);
             return "error/error";
         }
-        return "redirect:/users";
     }
 
     @GetMapping("/checkusername")

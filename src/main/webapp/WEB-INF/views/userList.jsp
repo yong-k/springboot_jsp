@@ -15,7 +15,7 @@
     <div class="main">
         <div class="container text-center">
             <div id="userlist-btn-box" class="main-header">
-                <button type="button" id="member-save-btn" class="btn btn-primary" onclick="location.href='/users/register'">회원 등록</button>
+                <a class="btn btn-primary" href="/users/register">회원 등록</a>
             </div>
             <div class="row">
                 <div class="col">
@@ -50,7 +50,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <jsp:include page="footer.jsp"></jsp:include>

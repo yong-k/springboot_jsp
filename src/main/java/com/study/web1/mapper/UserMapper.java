@@ -5,23 +5,20 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
     List<UserVo> findAll();
 
-    Optional<UserVo> findById(Long id);
+    UserVo findById(Long id);
 
-    Optional<UserVo> findByUsername(String username);
+    int registerUser(UserVo user);
 
-    Integer registerUser(UserVo user);
+    int updateUser(UserVo user);
 
-    Integer updateUser(UserVo user);
+    int deleteUser(Long id);
 
-    Integer deleteUser(Long id);
+    int countDuplicateUsername(@Param("id") Long id, @Param("username") String username);
 
-    Integer countDuplicateUsername(@Param("id") Long id, @Param("username") String username);
-
-    Integer countDuplicateEmail(@Param("id") Long id, @Param("email") String email);
+    int countDuplicateEmail(@Param("id") Long id, @Param("email") String email);
 }

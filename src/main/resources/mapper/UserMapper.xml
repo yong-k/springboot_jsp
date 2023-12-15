@@ -14,12 +14,6 @@
         WHERE id = #{id}
     </select>
 
-    <select id="findByUsername" resultType="com.study.web1.vo.UserVo">
-        SELECT id, name, username, email, address, phone, website, company
-        FROM User
-        WHERE username = #{username}
-    </select>
-
     <insert id="registerUser">
         INSERT INTO User (name, username, email, password, address, phone, website, company)
         VALUES (#{name}, #{username}, #{email}, #{password}, #{address}, #{phone}, #{website}, #{company})
@@ -27,7 +21,14 @@
 
     <update id="updateUser">
         UPDATE User
-        SET name = #{name}, username = #{username}, password = #{password}, email = #{email}, address = #{address}, phone = #{phone}, website = #{website}, company = #{company}
+        SET name = #{name},
+            username = #{username},
+            password = #{password},
+            email = #{email},
+            address = #{address},
+            phone = #{phone},
+            website = #{website},
+            company = #{company}
         WHERE id = #{id};
     </update>
 

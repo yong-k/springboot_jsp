@@ -83,7 +83,6 @@
                     <div class="errMsg invalid-feedback" id="requiredErrMsg">닉네임, 비밀번호, 이메일은 필수 입력 항목입니다.</div>
                 </div>
             </form>
-
         </div>
     </div>
 

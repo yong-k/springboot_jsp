@@ -1,5 +1,4 @@
-let deleteBtn = document.getElementById("deleteBtn");
-deleteBtn.onclick = () => {
+document.getElementById("deleteBtn").onclick = () => {
     let response = confirm("삭제하시겠습니까?");
     if (response) {
         let id = document.getElementById("deleteBtn").value;

@@ -84,7 +84,6 @@
                 </div>
                 <input type="hidden" id="id" name="id" value="${user.id}">
             </form>
-
         </div>
     </div>
 

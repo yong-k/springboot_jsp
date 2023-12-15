@@ -6,9 +6,22 @@
     <meta charset="UTF-8">
     <title>web</title>
     <script>
-        let message = "${message}";
-        if (message == "")
-            message = "예상치 못한 에러가 발생했습니다.";
+        /**
+         * errcode
+         * 1: 존재하지 않는 회원입니다.
+         * 2: 시스템에 문제가 발생했습니다. 다시 시도해주세요.
+         * 3: 예상치 못한 오류가 발생했습니다.
+         * */
+
+        let errcode = "${errcode}";
+
+        if (errcode == 1)
+            message = "존재하지 않는 회원입니다.";
+        else if (errcode == 2)
+            message = "시스템에 문제가 발생했습니다. 다시 시도해주세요.";
+        else
+            message = "예상치 못한 오류가 발생했습니다.";
+
         alert(message);
         history.back();
     </script>

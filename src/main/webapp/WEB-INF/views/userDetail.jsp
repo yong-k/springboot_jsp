@@ -18,7 +18,6 @@
                 <h3 class="main-header-info">회원 정보</h3>
             </div>
 
-
             <div class="mb-3 row">
                 <label for="name" class="col-sm-2 col-form-label">이름</label>
                 <div class="col-sm-3">
@@ -63,10 +62,9 @@
             </div>
 
             <div class="userform-btn-box">
-                <button type="button" class="btn btn-primary userform-btn" onclick="location.href='/users/update/${user.id}'">수정</button>
+                <a class="btn btn-primary userform-btn" href="/users/update/${user.id}">수정</a>
                 <button type="button" id="deleteBtn" class="btn btn-primary userform-btn" value="${user.id}">삭제</button>
             </div>
-
         </div>
     </div>
 
