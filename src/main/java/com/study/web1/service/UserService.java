@@ -25,16 +25,16 @@ public class UserService {
         return user;
     }
 
-    public int registerUser(UserVo user) {
-        return userMapper.registerUser(user);
+    public void registerUser(UserVo user) {
+        userMapper.registerUser(user);
     }
 
-    public int updateUser(UserVo user) {
-        return userMapper.updateUser(user);
+    public void updateUser(UserVo user) {
+        userMapper.updateUser(user);
     }
 
-    public int deleteUser(Long id) {
-        return userMapper.deleteUser(id);
+    public void deleteUser(Long id) {
+        userMapper.deleteUser(id);
     }
 
     public int countDuplicateUsername(Long id, String username) {

@@ -37,7 +37,6 @@ public class UserController {
             return "userDetail";
         } catch (UserNotFoundException e) {
             model.addAttribute("errcode", NOT_EXIST_USER);
-            log.error("Error in UserController.findById()", e);
             return "error/error";
         } catch (Exception e) {
             log.error("Error in UserController.findById()", e);
@@ -57,7 +56,6 @@ public class UserController {
             return "redirect:/users";
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("errcode", SYSTEM_PROBLEM);
-            log.error("Error in UserController.registerUser()", e);
             return "error/error";
         } catch (Exception e) {
             log.error("Error in UserController.registerUser()", e);
@@ -72,7 +70,6 @@ public class UserController {
             return "userUpdateForm";
         } catch (UserNotFoundException e) {
             model.addAttribute("errcode", NOT_EXIST_USER);
-            log.error("Error in UserController.updateForm()", e);
             return "error/error";
         } catch (Exception e) {
             log.error("Error in UserController.updateForm()", e);
@@ -87,7 +84,6 @@ public class UserController {
             return "redirect:/users/" + user.getId();
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("errcode", SYSTEM_PROBLEM);
-            log.error("Error in UserController.updateUser()", e);
             return "error/error";
         } catch (Exception e) {
             log.error("Error in UserController.updateUser()", e);
@@ -96,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(Model model, @PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
             return "redirect:/users";

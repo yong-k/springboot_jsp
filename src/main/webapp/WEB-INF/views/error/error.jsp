@@ -7,12 +7,11 @@
     <title>web</title>
     <script>
         /**
-         * errcode
+         * [[ errcode ]]
+         * default: 예상치 못한 오류가 발생했습니다.
          * 1: 존재하지 않는 회원입니다.
          * 2: 시스템에 문제가 발생했습니다. 다시 시도해주세요.
-         * 3: 예상치 못한 오류가 발생했습니다.
          * */
-
         let errcode = "${errcode}";
 
         if (errcode == 1)

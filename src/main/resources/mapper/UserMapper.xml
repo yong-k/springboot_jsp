@@ -29,7 +29,7 @@
             phone = #{phone},
             website = #{website},
             company = #{company}
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteUser">
@@ -38,7 +38,7 @@
     </delete>
 
     <select id="countDuplicateUsername" resultType="java.lang.Integer">
-        SELECT count(*)
+        SELECT COUNT(*)
         FROM User
         WHERE username = #{username}
         <if test="id != null">
@@ -47,7 +47,7 @@
     </select>
 
     <select id="countDuplicateEmail" resultType="java.lang.Integer">
-        SELECT count(*)
+        SELECT COUNT(*)
         FROM User
         WHERE email = #{email}
         <if test="id != null">
